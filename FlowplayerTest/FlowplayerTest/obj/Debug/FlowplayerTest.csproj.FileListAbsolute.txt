@@ -4,3 +4,9 @@ c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\
 c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.csprojResolveAssemblyReference.cache
 c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.dll
 c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.pdb
+C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.dll.config
+C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.dll
+C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.pdb
+C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.csprojResolveAssemblyReference.cache
+C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.dll
+C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.pdb

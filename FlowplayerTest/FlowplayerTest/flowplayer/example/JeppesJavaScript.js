@@ -12,10 +12,13 @@
 ga('create', 'UA-57122798-1', 'auto');
 
 var interval = 1500;
-var timesTriggered = 1;
-var totalTimeWatched = 0;
+var currentMilestone = 0;
 var timer;
 var milestonesReached = [];
+var milestonesSkipped = [];
+var seekOutTime;
+var justSeeked = false;
+milestonesReached.push("Milestone 0");
 
 function onStartEvent() {
     console.log("onStartEvent");
@@ -27,7 +30,7 @@ function onStartEvent() {
 function onFinishEvent() {
     console.log("onFinishEvent");
     clearInterval(timer);
-    totalTimeWatched = 0;
+    currentMilestone = 0;
 }
 
 function onPauseEvent() {
@@ -42,41 +45,73 @@ function onResumeEvent() {
     }, interval);
 }
 
-var justSeeked = false;
-//function onBeforeSeekEvent() {
-//    console.log("onBeforeSeek");
-//    console.log(milestonesReached); // [milestonesReached.length - 1].substring(0, 10)
-//    //ga("send", {
-//    //    "hitType": "event",
-//    //    "eventCategory": "This is a test",
-//    //    "eventAction": milestonesReached[fruits.length - 1].substring(0, 10),
-//    //    "eventLabel": window.flowplayer("player").getClip().url,
-//    //    "eventValue": interval
-//    //});
+function onBeforeSeekEvent(arg1, arg2) {
+    seekOutTime = window.flowplayer("player").getTime();//milestonesReached[milestonesReached.length - 1].replace("Milestone ", "");
+    clearInterval(timer);
+}
 
-//    justSeeked = true;
-//}
-
-function onSeekEvent() {
-    console.log("onSeek");
-    console.log(milestonesReached[milestonesReached.length - 1].replace("Milestone ", ""));
+function onSeekEvent(arg1, arg2) {
+    timer = setInterval(function () {
+        sendReportToGoogleAnalytics();
+    }, interval);
+    justSeeked = true;
 }
 
 function sendReportToGoogleAnalytics() {
-    totalTimeWatched += interval / 1000;
-    //console.log("totalTimeWatched " + totalTimeWatched)
-    var eventAction = "Milestone " + totalTimeWatched;
+    currentMilestone = Math.round(window.flowplayer("player").getTime() / (interval / 1000)) * (interval / 1000);
+    var eventAction = currentMilestone; //var eventAction = "Milestone " + currentMilestone;
+    if (justSeeked && seekOutTime < currentMilestone) {
+        //ga("send", {
+        //    "hitType": "event",
+        //    "eventCategory": "This is a test",
+        //    "eventAction": "SeekIn " + eventAction, //"eventAction": "SeekIn " + eventAction.replace("Milestone ", ""),
+        //    "eventLabel": window.flowplayer("player").getClip().url,
+        //    "eventValue": interval
+        //});
+        //var seekOutTimeAlt = (parseFloat(milestonesReached[milestonesReached.length - 1]) + parseFloat(interval / 1000)); //        var seekOutTimeAlt = (parseFloat(milestonesReached[milestonesReached.length - 1].replace("Milestone ", "")) + parseFloat(interval / 1000));
+        var seekOutTimeAlt = getLargest(milestonesSkipped);
+        var seekInTimeAlt = (parseFloat(currentMilestone) - parseFloat(interval / 1000));
+
+        console.log("SeekOut " + seekOutTimeAlt);
+        console.log("SeekIn " + seekInTimeAlt);
+
+        console.log(setSkippedMilestoneList(seekOutTimeAlt, seekInTimeAlt));
+        justSeeked = false;
+    }
     if (milestonesReached.indexOf(eventAction) == -1) {
-        ga("send", {
-            "hitType": "event",
-            "eventCategory": "This is a test",
-            "eventAction": eventAction,
-            "eventLabel": window.flowplayer("player").getClip().url,
-            "eventValue": interval
-        });
+        if (milestonesSkipped.indexOf(eventAction) != -1) {
+            eventAction = "SkippedMilestone " + currentMilestone;
+        }
+        //ga("send", {
+        //    "hitType": "event",
+        //    "eventCategory": "This is a test",
+        //    "eventAction": "Milestone " + eventAction,
+        //    "eventLabel": window.flowplayer("player").getClip().url,
+        //    "eventValue": interval
+        //});
         console.log(eventAction);
+
         milestonesReached.push(eventAction);
     }
-    timesTriggered++;
-    
+}
+function getLargest(arr) {
+    var largest = -1;
+
+    for (var key in arr) {
+        if (arr[key].value > largest) {
+            largest = arr[key].value;
+        }
+    }
+    return largest;
+}
+
+
+function setSkippedMilestoneList(start, end) {
+    var skippedTime = end - start;
+    for (; start <= end;) {
+        milestonesSkipped.push(start);
+        start += (interval / 1000);
+    };
+    return milestonesSkipped;
+
 }
