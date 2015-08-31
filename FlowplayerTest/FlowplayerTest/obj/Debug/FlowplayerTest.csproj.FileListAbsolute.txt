@@ -1,0 +1,6 @@
+c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.dll.config
+c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.dll
+c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.pdb
+c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.csprojResolveAssemblyReference.cache
+c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.dll
+c:\users\jb\documents\visual studio 2013\Projects\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.pdb
