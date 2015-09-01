@@ -12,41 +12,42 @@
 ga('create', 'UA-57122798-1', 'auto');
 
 var interval = 1500;
-var currentMilestone = 0;
+var currentMilestone;
 var timer;
-var milestonesReached = [];
-var milestonesSkipped = [];
-var seekOutTime;
-var justSeeked = false;
-milestonesReached.push("Milestone 0");
+var milestonesReached;
+var milestonesSkipped;
 
 function onStartEvent() {
-    console.log("onStartEvent");
+    console.log(">>> " + "onStartEvent");
     timer = setInterval(function () {
         sendReportToGoogleAnalytics();
     }, interval);
+
+    currentMilestone = 0;
+    milestonesReached = [];
+    milestonesReached.push(0);
+    milestonesSkipped = [];
 }
 
 function onFinishEvent() {
-    console.log("onFinishEvent");
+    console.log(">>> " + "onFinishEvent");
     clearInterval(timer);
     currentMilestone = 0;
 }
 
 function onPauseEvent() {
-    console.log("onPauseEvent");
+    console.log(">>> " + "onPauseEvent");
     clearInterval(timer);
 }
 
 function onResumeEvent() {
-    console.log("onResumeEvent");
+    console.log(">>> " + "onResumeEvent");
     timer = setInterval(function () {
         sendReportToGoogleAnalytics();
     }, interval);
 }
 
 function onBeforeSeekEvent(arg1, arg2) {
-    seekOutTime = window.flowplayer("player").getTime();//milestonesReached[milestonesReached.length - 1].replace("Milestone ", "");
     clearInterval(timer);
 }
 
@@ -54,64 +55,77 @@ function onSeekEvent(arg1, arg2) {
     timer = setInterval(function () {
         sendReportToGoogleAnalytics();
     }, interval);
-    justSeeked = true;
 }
 
 function sendReportToGoogleAnalytics() {
     currentMilestone = Math.round(window.flowplayer("player").getTime() / (interval / 1000)) * (interval / 1000);
-    var eventAction = currentMilestone; //var eventAction = "Milestone " + currentMilestone;
-    if (justSeeked && seekOutTime < currentMilestone) {
+    var seekInTimeAlt = (parseFloat(currentMilestone) - parseFloat(interval / 1000));
+    var seekOutTimeAlt = getLargest(milestonesReached, milestonesSkipped) + parseFloat(interval / 1000);
+    if (seekInTimeAlt > seekOutTimeAlt) {
         //ga("send", {
         //    "hitType": "event",
         //    "eventCategory": "This is a test",
-        //    "eventAction": "SeekIn " + eventAction, //"eventAction": "SeekIn " + eventAction.replace("Milestone ", ""),
+        //    "eventAction": "SeekOut " + seekOutTimeAlt,
         //    "eventLabel": window.flowplayer("player").getClip().url,
         //    "eventValue": interval
         //});
-        //var seekOutTimeAlt = (parseFloat(milestonesReached[milestonesReached.length - 1]) + parseFloat(interval / 1000)); //        var seekOutTimeAlt = (parseFloat(milestonesReached[milestonesReached.length - 1].replace("Milestone ", "")) + parseFloat(interval / 1000));
-        var seekOutTimeAlt = getLargest(milestonesSkipped);
-        var seekInTimeAlt = (parseFloat(currentMilestone) - parseFloat(interval / 1000));
-
-        console.log("SeekOut " + seekOutTimeAlt);
-        console.log("SeekIn " + seekInTimeAlt);
-
-        console.log(setSkippedMilestoneList(seekOutTimeAlt, seekInTimeAlt));
-        justSeeked = false;
-    }
-    if (milestonesReached.indexOf(eventAction) == -1) {
-        if (milestonesSkipped.indexOf(eventAction) != -1) {
-            eventAction = "SkippedMilestone " + currentMilestone;
-        }
         //ga("send", {
         //    "hitType": "event",
         //    "eventCategory": "This is a test",
-        //    "eventAction": "Milestone " + eventAction,
+        //    "eventAction": "SeekIn " + seekInTimeAlt,
+        //    "eventLabel": window.flowplayer("player").getClip().url,
+        //    "eventValue": interval
+        //});
+        console.log("SeekOut   " + seekOutTimeAlt);
+        console.log("SeekIn    " + seekInTimeAlt);
+
+        setSkippedMilestoneList(seekOutTimeAlt, seekInTimeAlt);
+    }
+    if (milestonesReached.indexOf(currentMilestone) == -1) {
+
+        var eventAction;
+        if (milestonesSkipped.indexOf(currentMilestone) != -1) {
+            eventAction = "SkippedMilestone " + currentMilestone;
+        }
+        else {
+            eventAction = "Milestone " + currentMilestone;
+        }
+        //ga("send", {
+        //    "hitType": "event",
+        //    "eventCategory": "This is a Seek test",
+        //    "eventAction": eventAction,
         //    "eventLabel": window.flowplayer("player").getClip().url,
         //    "eventValue": interval
         //});
         console.log(eventAction);
 
-        milestonesReached.push(eventAction);
+        milestonesReached.push(currentMilestone);
     }
 }
-function getLargest(arr) {
+function getLargest(arr, arr2) {
+    var arrString = arr + ","+ arr2;
+    var theArr = arrString.split(",");
     var largest = -1;
 
-    for (var key in arr) {
-        if (arr[key].value > largest) {
-            largest = arr[key].value;
+    var newArr = [];
+    for (var key in theArr) {
+        newArr.push(parseFloat(theArr[key]));
+    };
+
+    for (var key in newArr) {
+        if (newArr[key] > largest) {
+            largest = newArr[key];
         }
     }
+
     return largest;
 }
 
 
 function setSkippedMilestoneList(start, end) {
-    var skippedTime = end - start;
+   // if (start === end) return;
     for (; start <= end;) {
         milestonesSkipped.push(start);
         start += (interval / 1000);
     };
-    return milestonesSkipped;
-
 }
