@@ -27,12 +27,27 @@ function onStartEvent() {
     milestonesReached = [];
     milestonesReached.push(0);
     milestonesSkipped = [];
+
+    ga("send", {
+        "hitType": "event",
+        "eventCategory": window.eventCategory,
+        "eventAction": "Start",
+        "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
+        "eventValue": interval
+    });
 }
 
 function onFinishEvent() {
     console.log(">>> " + "onFinishEvent");
     clearInterval(timer);
     currentMilestone = 0;
+    ga("send", {
+        "hitType": "event",
+        "eventCategory": window.eventCategory,
+        "eventAction": "Finish",
+        "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
+        "eventValue": interval
+    });
 }
 
 function onPauseEvent() {
@@ -66,14 +81,14 @@ function sendReportToGoogleAnalytics() {
             "hitType": "event",
             "eventCategory": window.eventCategory,
             "eventAction": "SeekOut " + seekOutTimeAlt,
-            "eventLabel": window.flowplayer("player").getClip().url,
+            "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
             "eventValue": interval
         });
         ga("send", {
             "hitType": "event",
             "eventCategory": window.eventCategory,
             "eventAction": "SeekIn " + seekInTimeAlt,
-            "eventLabel": window.flowplayer("player").getClip().url,
+            "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
             "eventValue": interval
         });
         console.log("SeekOut   " + seekOutTimeAlt);
@@ -94,10 +109,10 @@ function sendReportToGoogleAnalytics() {
             "hitType": "event",
             "eventCategory": window.eventCategory,
             "eventAction": eventAction,
-            "eventLabel": window.flowplayer("player").getClip().url,
+            "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
             "eventValue": interval
         });
-        console.log(eventAction);
+        console.log(eventAction + " :: " + window.eventCategory);
 
         milestonesReached.push(currentMilestone);
     }
