@@ -62,20 +62,20 @@ function sendReportToGoogleAnalytics() {
     var seekInTimeAlt = (parseFloat(currentMilestone) - parseFloat(interval / 1000));
     var seekOutTimeAlt = getLargest(milestonesReached, milestonesSkipped) + parseFloat(interval / 1000);
     if (seekInTimeAlt > seekOutTimeAlt) {
-        //ga("send", {
-        //    "hitType": "event",
-        //    "eventCategory": "This is a test",
-        //    "eventAction": "SeekOut " + seekOutTimeAlt,
-        //    "eventLabel": window.flowplayer("player").getClip().url,
-        //    "eventValue": interval
-        //});
-        //ga("send", {
-        //    "hitType": "event",
-        //    "eventCategory": "This is a test",
-        //    "eventAction": "SeekIn " + seekInTimeAlt,
-        //    "eventLabel": window.flowplayer("player").getClip().url,
-        //    "eventValue": interval
-        //});
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": window.eventCategory,
+            "eventAction": "SeekOut " + seekOutTimeAlt,
+            "eventLabel": window.flowplayer("player").getClip().url,
+            "eventValue": interval
+        });
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": window.eventCategory,
+            "eventAction": "SeekIn " + seekInTimeAlt,
+            "eventLabel": window.flowplayer("player").getClip().url,
+            "eventValue": interval
+        });
         console.log("SeekOut   " + seekOutTimeAlt);
         console.log("SeekIn    " + seekInTimeAlt);
 
@@ -90,13 +90,13 @@ function sendReportToGoogleAnalytics() {
         else {
             eventAction = "Milestone " + currentMilestone;
         }
-        //ga("send", {
-        //    "hitType": "event",
-        //    "eventCategory": "This is a Seek test",
-        //    "eventAction": eventAction,
-        //    "eventLabel": window.flowplayer("player").getClip().url,
-        //    "eventValue": interval
-        //});
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": window.eventCategory,
+            "eventAction": eventAction,
+            "eventLabel": window.flowplayer("player").getClip().url,
+            "eventValue": interval
+        });
         console.log(eventAction);
 
         milestonesReached.push(currentMilestone);

@@ -19,12 +19,13 @@
         <h1>Minimal Flowplayer setup</h1>
         <p>View commented source code to get familiar with Flowplayer installation.</p>
         <!-- this A tag is where your Flowplayer will be placed. it can be anywhere -->
-        <a href="http://demosource.dam.digizuite.com/dmm3bwsv3/135_50016_10010_1_11_0_6cd61ba0-6ec7-4fbe-9e7a-e9a3f4b551d9_False.mp4" style="display:block;width:520px;height:330px" id="player">
+        <a href="http://demosource.dam.digizuite.com/dmm3bwsv3/122_50016_10010_1_11_0_4491003a-fbe3-489d-9dee-671daeaaafb2_False.mp4?mptdid=4520&iefix=1441097878566" style="display:block;width:520px;height:330px" id="player">
         </a>
         <!-- 1  -->
         <!-- 2 http://demosource.dam.digizuite.com/dmm3bwsv3/124_50016_10010_1_11_0_8b1b9244-5828-425b-bf11-dd1b83f85906_False.mp4?mptdid=4490&iefix=1440409606275 -->
         <!-- 3 http://demosource.dam.digizuite.com/dmm3bwsv3/746_50016_10010_1_11_0_c2eb6788-a993-47bb-ab8b-184dd78e4535_False.mp4?mptdid=30147&iefix=1440679967091 -->
         <!-- 4 http://demosource.dam.digizuite.com/dmm3bwsv3/135_50016_10010_1_11_0_6cd61ba0-6ec7-4fbe-9e7a-e9a3f4b551d9_False.mp4?mptdid=4179&iefix=1441004018737-->
+        <!-- 5 http://demosource.dam.digizuite.com/dmm3bwsv3/122_50016_10010_1_11_0_4491003a-fbe3-489d-9dee-671daeaaafb2_False.mp4?mptdid=4520&iefix=1441097878566 -->
         <script type="text/javascript" src="/flowplayer/example/JeppesJavaScript.js"></script>
         <!-- this will install flowplayer inside previous A- tag. -->
         <script>
@@ -33,12 +34,12 @@
 
             //https://flowplayer.org/forum/#!/scripting_api:events-not-firingexcept-on
 
-
+            var eventCategory = 'This is a Seek test2'
 
             var lul = flowplayer("player", "../flowplayer-3.2.18.swf", {
                 clip: {
                     // this will be tracked under our Promo Video category
-                    eventCategory: 'Promo Video test2',
+                    eventCategory: eventCategory,
 
                     onStart: onStartEvent,
                     onPause: onPauseEvent,
