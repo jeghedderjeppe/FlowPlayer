@@ -19,22 +19,16 @@
         <h1>Minimal Flowplayer setup</h1>
         <p>View commented source code to get familiar with Flowplayer installation.</p>
         <!-- this A tag is where your Flowplayer will be placed. it can be anywhere -->
-        <a href="http://demosource.dam.digizuite.com/dmm3bwsv3/125_50016_10010_1_11_0_f7f0b7d4-dd48-412d-b8b2-fe6387833508_False.mp4?mptdid=4452&iefix=1441279624040" style="display:block;width:520px;height:330px" id="player">
+        <a href="http://demosource.dam.digizuite.com/dmm3bwsv3/116_50016_10010_1_11_0_026e75dc-5421-41e5-a934-391fdee284f3_False.mp4?mptdid=4942&iefix=1441627464799" style="display:block;width:520px;height:330px" id="player">
         </a>
-        <!-- 1  -->
-        <!-- 2 http://demosource.dam.digizuite.com/dmm3bwsv3/124_50016_10010_1_11_0_8b1b9244-5828-425b-bf11-dd1b83f85906_False.mp4?mptdid=4490&iefix=1440409606275 -->
-        <!-- 3 http://demosource.dam.digizuite.com/dmm3bwsv3/746_50016_10010_1_11_0_c2eb6788-a993-47bb-ab8b-184dd78e4535_False.mp4?mptdid=30147&iefix=1440679967091 -->
-        <!-- 4 http://demosource.dam.digizuite.com/dmm3bwsv3/135_50016_10010_1_11_0_6cd61ba0-6ec7-4fbe-9e7a-e9a3f4b551d9_False.mp4?mptdid=4179&iefix=1441004018737-->
-        <!-- 5 http://demosource.dam.digizuite.com/dmm3bwsv3/122_50016_10010_1_11_0_4491003a-fbe3-489d-9dee-671daeaaafb2_False.mp4?mptdid=4520&iefix=1441097878566 -->
+        <!-- http://demosource.dam.digizuite.com/dmm3bwsv3/129_50016_10010_1_11_0_ed79f97b-0c55-4c4a-863f-003619941eae_False.mp4?mptdid=5022&iefix=1441625895998 -->
         <script type="text/javascript" src="/flowplayer/example/JeppesJavaScript.js"></script>
         <!-- this will install flowplayer inside previous A- tag. -->
         <script>
 
-
-
             //https://flowplayer.org/forum/#!/scripting_api:events-not-firingexcept-on
 
-            var eventCategory = 'This is a Seek test3'
+            var eventCategory = 'This is a Seek test5'
 
             flowplayer("player", "../flowplayer-3.2.18.swf", {
                 clip: {
@@ -72,7 +66,7 @@
             });
 
             window.onbeforeunload = function () {
-                return console.log("hay");
+                return console.log("Page reloads");
             };
         </script>
         <!--

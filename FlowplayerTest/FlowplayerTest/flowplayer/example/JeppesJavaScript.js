@@ -31,7 +31,7 @@ function onStartEvent() {
     ga("send", {
         "hitType": "event",
         "eventCategory": window.eventCategory,
-        "eventAction": "Start",
+        "eventAction": "Start " + (interval / 1000),
         "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
         "eventValue": interval
     });
@@ -44,7 +44,7 @@ function onFinishEvent() {
     ga("send", {
         "hitType": "event",
         "eventCategory": window.eventCategory,
-        "eventAction": "Finish",
+        "eventAction": "Finish " + Math.round(window.flowplayer("player").getTime() / (interval / 1000)) * (interval / 1000),
         "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
         "eventValue": interval
     });
@@ -112,7 +112,7 @@ function sendReportToGoogleAnalytics() {
             "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
             "eventValue": interval
         });
-        console.log(eventAction + " :: " + window.eventCategory);
+        console.log(eventAction);
 
         milestonesReached.push(currentMilestone);
     }

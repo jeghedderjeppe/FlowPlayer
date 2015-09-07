@@ -10,3 +10,9 @@ C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\bin\Flowpl
 C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.csprojResolveAssemblyReference.cache
 C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.dll
 C:\Users\jb\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.pdb
+C:\Users\mhm\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.dll.config
+C:\Users\mhm\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.dll
+C:\Users\mhm\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\bin\FlowplayerTest.pdb
+C:\Users\mhm\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.csprojResolveAssemblyReference.cache
+C:\Users\mhm\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.dll
+C:\Users\mhm\Documents\GitHub\FlowPlayer\FlowplayerTest\FlowplayerTest\obj\Debug\FlowplayerTest.pdb
