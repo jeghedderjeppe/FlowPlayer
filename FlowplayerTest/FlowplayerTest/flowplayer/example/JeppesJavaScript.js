@@ -16,9 +16,9 @@ var currentMilestone;
 var timer;
 var milestonesReached;
 var milestonesSkipped;
+var hasOnSeekHappened;
 
 function onStartEvent() {
-    console.log(">>> " + "onStartEvent");
     timer = setInterval(function () {
         sendReportToGoogleAnalytics();
     }, interval);
@@ -27,6 +27,7 @@ function onStartEvent() {
     milestonesReached = [];
     milestonesReached.push(0);
     milestonesSkipped = [];
+    hasOnSeekHappened = true;
 
     ga("send", {
         "hitType": "event",
@@ -35,19 +36,40 @@ function onStartEvent() {
         "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
         "eventValue": interval
     });
+    console.log(">>> Start ", currentMilestone);
 }
 
 function onFinishEvent() {
-    console.log(">>> " + "onFinishEvent");
+
+    if (!hasOnSeekHappened) {
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": window.eventCategory,
+            "eventAction": "SeekOut " + currentMilestone,
+            "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
+            "eventValue": interval
+        });
+        ga("send", {
+            "hitType": "event",
+            "eventCategory": window.eventCategory,
+            "eventAction": "SeekIn " + Math.round(window.flowplayer("player").getClip().duration),
+            "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
+            "eventValue": interval
+        });
+        console.log("SeekOut   " + currentMilestone);
+        console.log("SeekIn    " + Math.round(window.flowplayer("player").getClip().duration));
+    }
     clearInterval(timer);
-    currentMilestone = 0;
     ga("send", {
         "hitType": "event",
         "eventCategory": window.eventCategory,
-        "eventAction": "Finish " + Math.round(window.flowplayer("player").getTime() / (interval / 1000)) * (interval / 1000),
+        "eventAction": "Finish " + Math.round(window.flowplayer("player").getClip().duration),
         "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
         "eventValue": interval
     });
+    console.log("MilestonesReached", milestonesReached);
+    console.log("MilestonesSkipped", milestonesSkipped);
+    console.log(">>> Finish", Math.round(window.flowplayer("player").getClip().duration));
 }
 
 function onPauseEvent() {
@@ -64,18 +86,21 @@ function onResumeEvent() {
 
 function onBeforeSeekEvent(arg1, arg2) {
     clearInterval(timer);
+    hasOnSeekHappened = false;
 }
 
 function onSeekEvent(arg1, arg2) {
     timer = setInterval(function () {
         sendReportToGoogleAnalytics();
     }, interval);
+    hasOnSeekHappened = true;
 }
 
 function sendReportToGoogleAnalytics() {
     currentMilestone = Math.round(window.flowplayer("player").getTime() / (interval / 1000)) * (interval / 1000);
-    var seekInTimeAlt = (parseFloat(currentMilestone) - parseFloat(interval / 1000));
     var seekOutTimeAlt = getLargest(milestonesReached, milestonesSkipped) + parseFloat(interval / 1000);
+    var seekInTimeAlt = Math.round(window.flowplayer("player").getTime() / (interval / 1000)) * (interval / 1000) - (interval/1000);
+
     if (seekInTimeAlt > seekOutTimeAlt) {
         ga("send", {
             "hitType": "event",
@@ -99,12 +124,11 @@ function sendReportToGoogleAnalytics() {
     if (milestonesReached.indexOf(currentMilestone) == -1) {
 
         var eventAction;
-        if (milestonesSkipped.indexOf(currentMilestone) != -1) {
+        if (milestonesSkipped.indexOf(currentMilestone) != -1)
             eventAction = "SkippedMilestone " + currentMilestone;
-        }
-        else {
+        else
             eventAction = "Milestone " + currentMilestone;
-        }
+
         ga("send", {
             "hitType": "event",
             "eventCategory": window.eventCategory,
@@ -117,19 +141,14 @@ function sendReportToGoogleAnalytics() {
         milestonesReached.push(currentMilestone);
     }
 }
-function getLargest(arr, arr2) {
-    var arrString = arr + ","+ arr2;
-    var theArr = arrString.split(",");
+function getLargest(milestonesReached, milestonesSkipped) {
+    var combinedArrayString = milestonesReached + "," + milestonesSkipped;
+    var combinedArray = combinedArrayString.split(",");
     var largest = -1;
 
-    var newArr = [];
-    for (var key in theArr) {
-        newArr.push(parseFloat(theArr[key]));
-    };
-
-    for (var key in newArr) {
-        if (newArr[key] > largest) {
-            largest = newArr[key];
+    for (var key in combinedArray) {
+        if (parseFloat(combinedArray[key]) > largest) {
+            largest = parseFloat(combinedArray[key]);
         }
     }
 
