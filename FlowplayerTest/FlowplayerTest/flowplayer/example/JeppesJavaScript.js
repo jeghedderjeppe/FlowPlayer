@@ -10,7 +10,6 @@
 })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
 ga('create', 'UA-57122798-1', 'auto');
-
 var interval = 1500;
 var currentMilestone;
 var timer;
@@ -22,13 +21,11 @@ function onStartEvent() {
     timer = setInterval(function () {
         sendReportToGoogleAnalytics();
     }, interval);
-
     currentMilestone = 0;
     milestonesReached = [];
     milestonesReached.push(0);
     milestonesSkipped = [];
     hasOnSeekHappened = true;
-
     ga("send", {
         "hitType": "event",
         "eventCategory": window.eventCategory,
@@ -40,12 +37,11 @@ function onStartEvent() {
 }
 
 function onFinishEvent() {
-
     if (!hasOnSeekHappened) {
         ga("send", {
             "hitType": "event",
             "eventCategory": window.eventCategory,
-            "eventAction": "SeekOut " + currentMilestone,
+            "eventAction": "SeekOut " + (currentMilestone + parseFloat(interval / 1000)),
             "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
             "eventValue": interval
         });
@@ -56,7 +52,7 @@ function onFinishEvent() {
             "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
             "eventValue": interval
         });
-        console.log("SeekOut   " + currentMilestone);
+        console.log("SeekOut   " + (currentMilestone + parseFloat(interval / 1000)));
         console.log("SeekIn    " + Math.round(window.flowplayer("player").getClip().duration));
     }
     clearInterval(timer);
@@ -98,9 +94,8 @@ function onSeekEvent(arg1, arg2) {
 
 function sendReportToGoogleAnalytics() {
     currentMilestone = Math.round(window.flowplayer("player").getTime() / (interval / 1000)) * (interval / 1000);
-    var seekOutTimeAlt = getLargest(milestonesReached, milestonesSkipped) + parseFloat(interval / 1000);
-    var seekInTimeAlt = Math.round(window.flowplayer("player").getTime() / (interval / 1000)) * (interval / 1000) - (interval/1000);
-
+    var seekOutTimeAlt = getLargest(milestonesReached, milestonesSkipped) + (interval / 1000);
+    var seekInTimeAlt = currentMilestone - (interval / 1000);
     if (seekInTimeAlt > seekOutTimeAlt) {
         ga("send", {
             "hitType": "event",
@@ -118,11 +113,9 @@ function sendReportToGoogleAnalytics() {
         });
         console.log("SeekOut   " + seekOutTimeAlt);
         console.log("SeekIn    " + seekInTimeAlt);
-
         setSkippedMilestoneList(seekOutTimeAlt, seekInTimeAlt);
     }
-    if (milestonesReached.indexOf(currentMilestone) == -1) {
-
+    if (milestonesReached.indexOf(currentMilestone) == -1 && currentMilestone != Math.round(window.flowplayer("player").getClip().duration)) {
         var eventAction;
         if (milestonesSkipped.indexOf(currentMilestone) != -1)
             eventAction = "SkippedMilestone " + currentMilestone;
@@ -137,7 +130,6 @@ function sendReportToGoogleAnalytics() {
             "eventValue": interval
         });
         console.log(eventAction);
-
         milestonesReached.push(currentMilestone);
     }
 }
@@ -145,13 +137,11 @@ function getLargest(milestonesReached, milestonesSkipped) {
     var combinedArrayString = milestonesReached + "," + milestonesSkipped;
     var combinedArray = combinedArrayString.split(",");
     var largest = -1;
-
     for (var key in combinedArray) {
         if (parseFloat(combinedArray[key]) > largest) {
             largest = parseFloat(combinedArray[key]);
         }
     }
-
     return largest;
 }
 
