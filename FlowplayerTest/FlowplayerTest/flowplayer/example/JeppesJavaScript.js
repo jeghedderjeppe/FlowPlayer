@@ -33,15 +33,17 @@ function onStartEvent() {
         "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
         "eventValue": interval
     });
-    console.log(">>> Start ", currentMilestone);
+    console.log(">>> Start ", currentMilestone, eventCategory);
 }
 
 function onFinishEvent() {
+    var seekOutTimeAlt = getLargest(milestonesReached, milestonesSkipped) + (interval / 1000);
     if (!hasOnSeekHappened) {
         ga("send", {
             "hitType": "event",
             "eventCategory": window.eventCategory,
-            "eventAction": "SeekOut " + (currentMilestone + parseFloat(interval / 1000)),
+            //"eventAction": "SeekOut " + (currentMilestone + parseFloat(interval / 1000)),
+            "eventAction": "SeekOut " + seekOutTimeAlt,
             "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
             "eventValue": interval
         });
@@ -107,12 +109,12 @@ function sendReportToGoogleAnalytics() {
         ga("send", {
             "hitType": "event",
             "eventCategory": window.eventCategory,
-            "eventAction": "SeekIn " + seekInTimeAlt,
+            "eventAction": "SeekIn " + (seekInTimeAlt + (interval / 1000)),
             "eventLabel": window.flowplayer("player").getClip().url.split("/")[4].split("_")[0],
             "eventValue": interval
         });
         console.log("SeekOut   " + seekOutTimeAlt);
-        console.log("SeekIn    " + seekInTimeAlt);
+        console.log("SeekIn    " + (seekInTimeAlt + (interval / 1000)));
         setSkippedMilestoneList(seekOutTimeAlt, seekInTimeAlt);
     }
     if (milestonesReached.indexOf(currentMilestone) == -1 && currentMilestone != Math.round(window.flowplayer("player").getClip().duration)) {
@@ -147,9 +149,24 @@ function getLargest(milestonesReached, milestonesSkipped) {
 
 
 function setSkippedMilestoneList(start, end) {
-   // if (start === end) return;
     for (; start <= end;) {
         milestonesSkipped.push(start);
         start += (interval / 1000);
     };
 }
+
+var eventCategory = 'debugging16'
+
+flowplayer("player", "../flowplayer-3.2.18.swf", {
+    clip: {
+        // this will be tracked under our Promo Video category
+        eventCategory: eventCategory,
+        onStart: onStartEvent,
+        onPause: onPauseEvent,
+        onResume: onResumeEvent,
+        onFinish: onFinishEvent,
+        onBeforeSeek: onBeforeSeekEvent,
+        onSeek: onSeekEvent
+
+    }
+});

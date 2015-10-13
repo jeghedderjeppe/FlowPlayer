@@ -23,55 +23,6 @@
         </a>
         <!-- http://demosource.dam.digizuite.com/dmm3bwsv3/129_50016_10010_1_11_0_ed79f97b-0c55-4c4a-863f-003619941eae_False.mp4?mptdid=5022&iefix=1441625895998 -->
         <script type="text/javascript" src="/flowplayer/example/JeppesJavaScript.js"></script>
-        <!-- this will install flowplayer inside previous A- tag. -->
-        <script>
-
-            //https://flowplayer.org/forum/#!/scripting_api:events-not-firingexcept-on
-
-            var eventCategory = 'debugging11'
-
-            flowplayer("player", "../flowplayer-3.2.18.swf", {
-                clip: {
-                    // this will be tracked under our Promo Video category
-                    eventCategory: eventCategory,
-                    onStart: onStartEvent,
-                    onPause: onPauseEvent,
-                    onResume: onResumeEvent,
-                    onFinish: onFinishEvent,
-                    onBeforeSeek: onBeforeSeekEvent,
-                    onSeek: onSeekEvent
-
-                },
-                /*onBeforeLoad : function () {
-                     alert("HEJSA");
-                 },*/
-                //plugins: {
-                //    gatracker: {
-                //        url: "flowplayer.analytics-3.2.9.swf",
-
-                //        // track all possible events. By default only Start and Stop
-                //        // are tracked with their corresponding playhead time.
-                //        events: {
-                //            all: false,
-                //            finish: true,
-                //            start: true,
-                //            start: "Start",
-                //            finish: 'Finish'
-                //        },
-                //        debug: false,
-                //        accountId: "UA-57122798-1" // your Google Analytics id here
-                //    }
-                //}
-            });
-
-            window.onbeforeunload = function () {
-                return console.log("Page reloads");
-            };
-        </script>
-        <!--
-            after this line is purely informational stuff.
-            does not affect on Flowplayer functionality
-        -->
         <p>
             If you are running these examples <strong>locally</strong> and not on some webserver you must edit your
             <a href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html">
