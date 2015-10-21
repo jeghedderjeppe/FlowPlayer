@@ -155,7 +155,7 @@ function setSkippedMilestoneList(start, end) {
     };
 }
 
-var eventCategory = 'debugging16'
+var eventCategory = 'debugging18'
 
 flowplayer("player", "../flowplayer-3.2.18.swf", {
     clip: {
